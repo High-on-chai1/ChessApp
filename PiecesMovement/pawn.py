@@ -17,6 +17,6 @@ def PawnMovement(BoardPieces,Row,Col):
         target = BoardPieces[NewRow][NewCol]
 
         if target == 0:
-            PawnLegalMoves.append([NewRow][NewCol])
+            PawnLegalMoves.append([NewRow, NewCol])
 
     return PawnLegalMoves
