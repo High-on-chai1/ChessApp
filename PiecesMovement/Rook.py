@@ -19,12 +19,12 @@ def RookMovement(BoardPieces, Row, Col):
         target = BoardPieces[NewRow][NewCol]
 
         if target == 0:
-            RookLegalMoves.append([NewRow][NewCol])
+            RookLegalMoves.append([NewRow, NewCol])
 
         elif Rook > 0 and target < 0:
-            RookLegalMoves.append([NewRow][NewCol])
+            RookLegalMoves.append([NewRow, NewCol])
 
         elif Rook < 0 and target > 0:
-            RookLegalMoves.append([NewRow][NewCol])
+            RookLegalMoves.append([NewRow, NewCol])
 
     return RookLegalMoves
