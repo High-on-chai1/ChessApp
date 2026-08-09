@@ -19,4 +19,10 @@ def PawnMovement(BoardPieces,Row,Col):
         if target == 0:
             PawnLegalMoves.append([NewRow, NewCol])
 
+        elif ((dr, dc) == (1,1) or (dr,dc) == (1,-1)) and (Pawn > 0 and target < 0)
+                PawnLegalMoves.append([NewRow, NewCol])
+
+        elif ((dr, dc) == (1,1) or (dr,dc) == (1,-1)) and (Pawn < 0 and target > 0):
+                PawnLegalMoves.append([NewRow, NewCol])
+
     return PawnLegalMoves
