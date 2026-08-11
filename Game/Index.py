@@ -11,4 +11,4 @@ def FindIndex(StartSquare):
         RowCount += 1
         if RowCount == 8:
             ColCount += 1
-            RowCount == 0
+            RowCount = 0
