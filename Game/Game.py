@@ -29,6 +29,20 @@ def GetLetterBoard():
 
 
 
+def FindIndex(DestinationSquare):
+    LetterBoard = GetLetterBoard()
+    RowCount = 0
+    ColCount = 0
+    for _ in range(64):
+        if LetterBoard[RowCount][ColCount] == DestinationSquare:
+            return RowCount, ColCount
+            
+        RowCount += 1
+        if RowCount == 8:
+            ColCount += 1
+            RowCount = 0
+
+
 
 def BishopMovement(BoardPieces, Row, Col):
     directions = [
@@ -182,10 +196,10 @@ def PawnMovement(BoardPieces,Row,Col):
     PawnLegalMoves = []
     Pawn = BoardPieces[Row][Col]
 
-    if Row == 6 and BoardPieces[5][Col] == 0 and BoardPieces[4][Col] == 0: #added double pawn movement seperately
+    if Row == 6 and BoardPieces[5][Col] == 0 and BoardPieces[4][Col] == 0 and Pawn == 1: 
          PawnLegalMoves.append([Row + 2,Col])
 
-    elif Row == 1 and BoardPieces[2][Col] == 0 and BoardPieces[3][Col] == 0:
+    elif Row == 1 and BoardPieces[2][Col] == 0 and BoardPieces[3][Col] == 0 and Pawn == -1:
          PawnLegalMoves.append([Row - 2, Col])
 
 
@@ -326,11 +340,14 @@ while True:
     StartSq = Movement[0]
     EndSq = Movement[1]
 
-    Index = FindIndex(StartSq)
-    Piece = NumberBoard[Index[0]][Index[1]]
+    StartIndex = FindIndex(StartSq)
+    Piece = NumberBoard[StartIndex[0]][StartIndex[1]]
+    EndIndex = FindIndex(EndSq)
 
-    if EndSq in LegalMoves[Piece - 1] and WhiteTurn == True:
-            print("Move Completed")
-            
-    if EndSq in LegalMoves[(Piece * -1) - 1] and BlackTurn == True:
-            print("Move Completed")
+    if EndIndex in LegalMoves[Piece - 1] and WhiteTurn == True:
+            NumberBoard[StartIndex[0]][StartIndex[1]] = 0
+            NumberBoard[EndIndex[0]][EndIndex[1]] = Piece
+
+    if EndIndex in LegalMoves[(Piece * -1) - 1] and BlackTurn == True:
+            NumberBoard[StartIndex[0]][StartIndex[1]] = 0
+            NumberBoard[EndIndex[0]][EndIndex[1]] = Piece
