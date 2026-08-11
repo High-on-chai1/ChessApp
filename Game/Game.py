@@ -13,6 +13,7 @@ def GetNumberBoard():
     return BoardNumber
 
 
+
 def GetLetterBoard():
     LetterBoard = [
         ["A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8"],
@@ -122,42 +123,7 @@ def KnightMovement(BoardPieces, Row, Col):
     directions =[( 2, 1),(-2,-1),
                  ( 1, 2),(-1,-2),
                  ( 2,-1),(-2, 1),
-                 (-1, 2)( 1,-2)
-    ]
-
-    KnightLegalMoves = []
-    Knight = BoardPieces[Row][Col]
-
-    
-    for dr, dc in directions:
-        NewRow = Row + dr
-        NewCol = Col + dc
-
-        if not (0 <= NewRow < 8 and 0 <= NewCol < 8):
-            continue
-        print(NewRow, NewCol)
-
-        target = BoardPieces[NewRow][NewCol]
-
-        if target == 0:
-            KnightLegalMoves.append(NewRow, NewCol)
-
-        elif Knight > 0 and target < 0:
-            KnightLegalMoves.append([NewRow, NewCol])
-
-        elif Knight < 0 and target > 0:
-            KnightLegalMoves.append([NewRow, NewCol])
-
-            
-    return KnightLegalMoves
-
-
-
-def KnightMovement(BoardPieces, Row, Col):
-    directions =[( 2, 1),(-2,-1),
-                 ( 1, 2),(-1,-2),
-                 ( 2,-1),(-2, 1),
-                 (-1, 2)( 1,-2)
+                 (-1, 2),( 1,-2)
     ]
 
     KnightLegalMoves = []
@@ -309,7 +275,7 @@ def RookMovement(BoardPieces, Row, Col):
 
 
 print("Enter Move in the format: Starting Square, Ending Square (e.g. A2,A4)")
-count = 0
+Count = 0
 WhiteTurn = False
 BlackTurn = False
 
@@ -326,7 +292,7 @@ while True:
     NumberBoard = GetNumberBoard()
 
     Movement = []
-    if count % 2 == 0:
+    if Count % 2 == 0:
         print("White Move: ")
         Move = str(input("Enter the move: "))
         WhiteTurn = True and BlackTurn = False
@@ -334,7 +300,7 @@ while True:
         print("Black Move: ")
         Move = str(input("Enter the move: "))
         BlackTurn = True and WhiteTurn = False
-    count += 1
+    Count += 1
 
     Movement = Move.split(",")
     StartSq = Movement[0]
