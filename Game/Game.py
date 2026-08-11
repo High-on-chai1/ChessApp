@@ -1,4 +1,4 @@
-def NumberBoard():
+def GetNumberBoard():
     BoardNumber = [[-4,-3,-2,-5,-6,-2,-3,-4],
                    [-1,-1,-1,-1,-1,-1,-1,-1],
                    [ 0, 0, 0, 0, 0, 0, 0, 0],
@@ -9,6 +9,8 @@ def NumberBoard():
                    [ 4, 3, 2, 5, 6, 2, 3, 4]]
     for row in BoardNumber:
         print(row)
+
+    return BoardNumber
 
 
 def GetLetterBoard():
@@ -292,19 +294,43 @@ def RookMovement(BoardPieces, Row, Col):
 
 
 
-
 print("Enter Move in the format: Starting Square, Ending Square (e.g. A2,A4)")
 count = 0
+WhiteTurn = False
+BlackTurn = False
+
 while True:
+    Index = []
+    LegalMoves = []
+    LegalMoves.append(PawnMovement)
+    LegalMoves.append(BishopMovement)
+    LegalMoves.append(KnightMovement)
+    LegalMoves.append(RookMovement)
+    LegalMoves.append(QueenMovement)
+    LegalMoves.append(KingMovement)
+
+    NumberBoard = GetNumberBoard()
+
     Movement = []
     if count % 2 == 0:
         print("White Move: ")
         Move = str(input("Enter the move: "))
+        WhiteTurn = True and BlackTurn = False
     else:
         print("Black Move: ")
         Move = str(input("Enter the move: "))
+        BlackTurn = True and WhiteTurn = False
     count += 1
 
     Movement = Move.split(",")
+    StartSq = Movement[0]
     EndSq = Movement[1]
-    if EndSq in LegalMoves:
+
+    Index = FindIndex(StartSq)
+    Piece = NumberBoard[Index[0]][Index[1]]
+
+    if EndSq in LegalMoves[Piece - 1] and WhiteTurn == True:
+            print("Move Completed")
+            
+    if EndSq in LegalMoves[(Piece * -1) - 1] and BlackTurn == True:
+            print("Move Completed")
