@@ -284,13 +284,33 @@ def RookMovement(BoardPieces, Row, Col):
 
     return RookLegalMoves
 
+def CastlingRules(Row,Col):
+    
+    if KingMoved == False and (Row == 7 and Col == 6) and RooksMoved[3] == False:
+        LegalMoves[5].append([7,6])
 
+    elif KingMoved == False and (Row == 7 and Col == 2) and RooksMoved[2] == False:
+        LegalMoves[5].append([7,2])
+
+    elif KingMoved == False and (Row == 0 and Col == 6) and RooksMoved[1] == False:
+        LegalMoves[5].append([0,6])
+    
+    elif KingMoved == False and (Row == 0 and Col == 2) and RooksMoved[0] == False:
+        LegalMoves[5].append([0,2])
+    
+
+def CastlingMove(Row,Col):
+    pass
 
 print("Enter Move in the format: Starting Square, Ending Square (e.g. A2,A4)")
 Count = 0
 WhiteTurn = False
 BlackTurn = False
 NumberBoard = GetNumberBoard()
+
+KingMoved = False
+RooksMoved = [False,False,
+              False,False]
 
 while True:
     Index = []
@@ -330,6 +350,8 @@ while True:
             print(f"{Notation(Piece)}{EndSq}") #algebraic notation for movement of pieces
             
             Count += 1
+            if Piece == 6:
+                KingMoved = True
         
     if EndIndex in LegalMoves[(Piece * -1) - 1] and BlackTurn == True and Piece < 0:
             NumberBoard[StartIndex[0]][StartIndex[1]] = 0
@@ -338,6 +360,7 @@ while True:
             print(f"{Notation(Piece)}{EndSq}") #algebraic notation for movement of pieces
 
             Count += 1
+            if Piece == -6:
+                KingMoved = True
 
-
-
+#To do, castling, en passant, checks, pins, promotion. not in order.
