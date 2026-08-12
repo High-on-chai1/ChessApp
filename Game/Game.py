@@ -9,6 +9,7 @@ def GetNumberBoard():
                    [ 4, 3, 2, 5, 6, 2, 3, 4]]
     for row in BoardNumber:
         print(row)
+    
 
     return BoardNumber
 
@@ -27,6 +28,17 @@ def GetLetterBoard():
     ]
 
     return LetterBoard
+
+
+
+def Notation(PieceNumber,Board):
+    if PieceNumber < 0:
+        PieceNumber = PieceNumber * (-1)
+    
+    PieceType =['','B','N','R','Q','K']
+
+    return PieceType[PieceNumber - 1]
+    #will implement disambiguation and other such features later, this is only a proof of concept
 
 
 
@@ -314,11 +326,17 @@ while True:
     if EndIndex in LegalMoves[Piece - 1] and WhiteTurn == True and Piece > 0:
             NumberBoard[StartIndex[0]][StartIndex[1]] = 0
             NumberBoard[EndIndex[0]][EndIndex[1]] = Piece
-            Count += 1
 
+            print(f"{Notation(Piece)}{EndSq}") #algebraic notation for movement of pieces
+            
+            Count += 1
+        
     if EndIndex in LegalMoves[(Piece * -1) - 1] and BlackTurn == True and Piece < 0:
             NumberBoard[StartIndex[0]][StartIndex[1]] = 0
             NumberBoard[EndIndex[0]][EndIndex[1]] = Piece
+
+            print(f"{Notation(Piece)}{EndSq}") #algebraic notation for movement of pieces
+
             Count += 1
 
 
