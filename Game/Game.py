@@ -311,12 +311,12 @@ while True:
     LegalMoves.append(QueenMovement(NumberBoard,StartIndex[0],StartIndex[1]))
     LegalMoves.append(KingMovement(NumberBoard,StartIndex[0],StartIndex[1]))
 
-    if EndIndex in LegalMoves[Piece - 1] and WhiteTurn == True:
+    if EndIndex in LegalMoves[Piece - 1] and WhiteTurn == True and Piece > 0:
             NumberBoard[StartIndex[0]][StartIndex[1]] = 0
             NumberBoard[EndIndex[0]][EndIndex[1]] = Piece
             Count += 1
 
-    if EndIndex in LegalMoves[(Piece * -1) - 1] and BlackTurn == True:
+    if EndIndex in LegalMoves[(Piece * -1) - 1] and BlackTurn == True and Piece < 0:
             NumberBoard[StartIndex[0]][StartIndex[1]] = 0
             NumberBoard[EndIndex[0]][EndIndex[1]] = Piece
             Count += 1
