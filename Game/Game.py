@@ -36,7 +36,7 @@ def FindIndex(DestinationSquare):
     ColCount = 0
     for _ in range(64):
         if LetterBoard[RowCount][ColCount] == DestinationSquare:
-            return RowCount, ColCount
+            return [RowCount, ColCount]
             
         RowCount += 1
         if RowCount == 8:
@@ -141,7 +141,7 @@ def KnightMovement(BoardPieces, Row, Col):
         target = BoardPieces[NewRow][NewCol]
 
         if target == 0:
-            KnightLegalMoves.append(NewRow, NewCol)
+            KnightLegalMoves.append([NewRow, NewCol])
 
         elif Knight > 0 and target < 0:
             KnightLegalMoves.append([NewRow, NewCol])
@@ -172,7 +172,7 @@ def PawnMovement(BoardPieces,Row,Col):
     for dr, dc in directions:
         if Pawn == -1:
             NewRow = Row - dr
-            NewCol = Col - dc
+            NewCol = Col + dc
         else:
             NewRow = Row + dr
             NewCol = Col + dc
@@ -278,29 +278,23 @@ print("Enter Move in the format: Starting Square, Ending Square (e.g. A2,A4)")
 Count = 0
 WhiteTurn = False
 BlackTurn = False
+NumberBoard = GetNumberBoard()
 
 while True:
     Index = []
     LegalMoves = []
-    LegalMoves.append(PawnMovement)
-    LegalMoves.append(BishopMovement)
-    LegalMoves.append(KnightMovement)
-    LegalMoves.append(RookMovement)
-    LegalMoves.append(QueenMovement)
-    LegalMoves.append(KingMovement)
-
-    NumberBoard = GetNumberBoard()
 
     Movement = []
     if Count % 2 == 0:
         print("White Move: ")
         Move = str(input("Enter the move: "))
-        WhiteTurn = True and BlackTurn = False
+        WhiteTurn = True
+        BlackTurn = False
     else:
         print("Black Move: ")
         Move = str(input("Enter the move: "))
-        BlackTurn = True and WhiteTurn = False
-    Count += 1
+        BlackTurn = True
+        WhiteTurn = False
 
     Movement = Move.split(",")
     StartSq = Movement[0]
@@ -310,10 +304,22 @@ while True:
     Piece = NumberBoard[StartIndex[0]][StartIndex[1]]
     EndIndex = FindIndex(EndSq)
 
+    LegalMoves.append(PawnMovement(NumberBoard,StartIndex[0],StartIndex[1]))
+    LegalMoves.append(BishopMovement(NumberBoard,StartIndex[0],StartIndex[1]))
+    LegalMoves.append(KnightMovement(NumberBoard,StartIndex[0],StartIndex[1]))
+    LegalMoves.append(RookMovement(NumberBoard,StartIndex[0],StartIndex[1]))
+    LegalMoves.append(QueenMovement(NumberBoard,StartIndex[0],StartIndex[1]))
+    LegalMoves.append(KingMovement(NumberBoard,StartIndex[0],StartIndex[1]))
+
     if EndIndex in LegalMoves[Piece - 1] and WhiteTurn == True:
             NumberBoard[StartIndex[0]][StartIndex[1]] = 0
             NumberBoard[EndIndex[0]][EndIndex[1]] = Piece
+            Count += 1
 
     if EndIndex in LegalMoves[(Piece * -1) - 1] and BlackTurn == True:
             NumberBoard[StartIndex[0]][StartIndex[1]] = 0
             NumberBoard[EndIndex[0]][EndIndex[1]] = Piece
+            Count += 1
+
+
+
