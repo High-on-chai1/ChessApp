@@ -130,6 +130,11 @@ def KingMovement(BoardPieces, SRow, SCol, ERow, ECol):
     if (ERow == 7 and (ECol == 6 or  ECol == 2)) or (ERow == 0 and (ECol == 6 or ECol == 2)):
         CastlingRules(SRow, SCol, ERow, ECol)
 
+    IllegalMoves = IsSquareTargeted(ERow,ECol,King)
+
+    KingLegalMoves = [move for move in LegalMoves if move not in IllegalMoves]  #[ move      for move in LegalMoves     if move not in IllegalMoves  ]
+#                                                                                   ↑              ↑                         ↑
+#                                                                                 keep this    go through these          only keep if true      
     return KingLegalMoves
 
 
@@ -309,23 +314,46 @@ def CastlingRules(SRow,SCol,ERow,ECol): #not fully completed, need to make sure 
         KingMoved[1] = True
         RooksMoved[0] = True
     
-def IsSquareTargeted(ERow, ECol): #WIP
-    ReverseVisionSquares = []
-    RPawnV = PawnMovement(NumberBoard,ERow,ECol) 
+def IsSquareTargeted(ERow, ECol, KingColor): #WIP
+
+    PseudoLegalMoves = []
+
     RBishopV = BishopMovement(NumberBoard,ERow,ECol) #RBishopV stands for Reverse Bishop Vision same convention will be used for all pieces
     RKnightV = KnightMovement(NumberBoard,ERow,ECol)
     RRookV = RookMovement(NumberBoard,ERow,ECol)
     RQueenV = QueenMovement(NumberBoard,ERow,ECol)
     RKingV = KingMovement(NumberBoard,ERow,ECol)
-    PseudoLegalMoves = []
-    for Row in RBishopV:
-        for Col in Row:
-            if NumberBoard[Row][Col] == 2:
-                PseudoLegalMoves.append([Row][Col])
- 
-def ReverseIteration(MoveList): #WIP
-    pass
 
+    if KingColor < 0:
+        PseudoLegalMoves.append([ReverseIteration(RBishopV, 2)])
+        PseudoLegalMoves.append([ReverseIteration(RKnightV, 3)])
+        PseudoLegalMoves.append([ReverseIteration(RRookV, 4)])
+        PseudoLegalMoves.append([ReverseIteration(RQueenV, 5)])
+        PseudoLegalMoves.append([ReverseIteration(RKingV, 6)])
+        if NumberBoard[ERow + 1][ECol - 1] == 1 or NumberBoard[ERow + 1][ECol + 1] == 1:
+            PseudoLegalMoves.append([ERow,ECol])
+
+
+    elif KingColor > 0:
+        PseudoLegalMoves.append([ReverseIteration(RBishopV, -2)])
+        PseudoLegalMoves.append([ReverseIteration(RKnightV, -3)])
+        PseudoLegalMoves.append([ReverseIteration(RRookV, -4)])
+        PseudoLegalMoves.append([ReverseIteration(RQueenV, -5)])
+        PseudoLegalMoves.append([ReverseIteration(RKingV, -6)])
+        if NumberBoard[ERow - 1][ECol - 1] == -1 or NumberBoard[ERow - 1][ECol + 1] == -1:
+            PseudoLegalMoves.append([ERow,ECol])
+
+    return PseudoLegalMoves
+
+    
+
+def ReverseIteration(MoveList, PieceType): #WIP
+    PLM = []
+    for Row, Col in MoveList:
+        if NumberBoard[Row][Col] == PieceType:
+            PLM.append([Row, Col])
+    return PLM
+ 
 
 
 
@@ -372,7 +400,7 @@ while True:
     LegalMoves.append(KnightMovement(NumberBoard,StartIndex[0],StartIndex[1]))
     LegalMoves.append(RookMovement(NumberBoard,StartIndex[0],StartIndex[1]))
     LegalMoves.append(QueenMovement(NumberBoard,StartIndex[0],StartIndex[1]))
-    LegalMoves.append(KingMovement(NumberBoard,StartIndex[0],StartIndex[1]))
+    LegalMoves.append(KingMovement(NumberBoard,StartIndex[0],StartIndex[1],EndIndex[0],EndIndex[1]))
 
     if EndIndex in LegalMoves[Piece - 1] and WhiteTurn == True and Piece > 0:
             NumberBoard[StartIndex[0]][StartIndex[1]] = 0
@@ -382,7 +410,7 @@ while True:
             
             Count += 1
             if Piece == 6:
-                KingMoved = True
+                KingMoved[0] = True
         
     if EndIndex in LegalMoves[(Piece * -1) - 1] and BlackTurn == True and Piece < 0:
             NumberBoard[StartIndex[0]][StartIndex[1]] = 0
@@ -392,6 +420,6 @@ while True:
 
             Count += 1
             if Piece == -6:
-                KingMoved = True
+                KingMoved[1] = True
 
 #To do, castling, en passant, checks, pins, promotion. not in order.
