@@ -20,7 +20,7 @@ def KnightMovement(BoardPieces, Row, Col):
         target = BoardPieces[NewRow][NewCol]
 
         if target == 0:
-            KnightLegalMoves.append(NewRow, NewCol)
+            KnightLegalMoves.append([NewRow, NewCol])
 
         elif Knight > 0 and target < 0:
             KnightLegalMoves.append([NewRow, NewCol])

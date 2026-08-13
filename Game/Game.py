@@ -287,7 +287,7 @@ def RookMovement(BoardPieces, Row, Col):
 
     return RookLegalMoves
 
-def CastlingRules(SRow,SCol,ERow,ECol): #not fully completed, need to make sure selected piece is king and no pieces in between
+def CastlingRules(SRow,SCol,ERow,ECol): #not fully completed, need to make sure selected piece is king and no pieces in between WIP
     
     if KingMoved == False and (ERow == 7 and ECol == 6) and (SRow == 7 and SCol == 4) and RooksMoved[3] == False and NumberBoard[SRow][SCol + 1] == NumberBoard[SRow][SCol + 2] == 0: #White KingSide
         LegalMoves[5].append([7,6])
@@ -309,7 +309,7 @@ def CastlingRules(SRow,SCol,ERow,ECol): #not fully completed, need to make sure 
         KingMoved[1] = True
         RooksMoved[0] = True
     
-def IsSquareTargeted(ERow, ECol):
+def IsSquareTargeted(ERow, ECol): #WIP
     ReverseVisionSquares = []
     RPawnV = PawnMovement(NumberBoard,ERow,ECol) 
     RBishopV = BishopMovement(NumberBoard,ERow,ECol) #RBishopV stands for Reverse Bishop Vision same convention will be used for all pieces
@@ -322,14 +322,15 @@ def IsSquareTargeted(ERow, ECol):
         for Col in Row:
             if NumberBoard[Row][Col] == 2:
                 PseudoLegalMoves.append([Row][Col])
+ 
+def ReverseIteration(MoveList): #WIP
+    pass
 
-def ReverseIteration(MoveList):
-    
 
 
 
 def CastlingMove(Row,Col):
-    print('idk man')
+    print('idk man') #WIP
 
 
 print("Enter Move in the format: Starting Square, Ending Square (e.g. A2,A4)")
