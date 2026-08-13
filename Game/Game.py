@@ -96,18 +96,18 @@ def BishopMovement(BoardPieces, Row, Col):
 
 
 
-def KingMovement(BoardPieces,Row,Col):
+def KingMovement(BoardPieces, SRow, SCol, ERow, ECol):
     directions = [
     (-1, -1), (-1, 0), (-1, 1),
     (0, -1),           (0, 1),
     (1, -1),  (1, 0),  (1, 1)
 ]
     KingLegalMoves = []
-    King = BoardPieces[Row][Col]
-
+    King = BoardPieces[SRow][SCol]
+    
     for dr, dc in directions:
-        NewRow = Row + dr
-        NewCol = Col + dc
+        NewRow = SRow + dr
+        NewCol = SCol + dc
     
         if not (0 <= NewRow < 8 and 0 <= NewCol < 8):
             continue
@@ -126,6 +126,9 @@ def KingMovement(BoardPieces,Row,Col):
         #opposite of above
         elif King < 0 and target > 0:
             KingLegalMoves.append([NewRow, NewCol])
+
+    if (ERow == 7 and (ECol == 6 or  ECol == 2)) or (ERow == 0 and (ECol == 6 or ECol == 2)):
+        CastlingRules(SRow, SCol, ERow, ECol)
 
     return KingLegalMoves
 
@@ -166,7 +169,7 @@ def KnightMovement(BoardPieces, Row, Col):
 
 
 
-def PawnMovement(BoardPieces,Row,Col):
+def PawnMovement(BoardPieces, Row, Col):
     directions = [
         (1,0), (1,1), (1,-1)
     ]
@@ -284,23 +287,50 @@ def RookMovement(BoardPieces, Row, Col):
 
     return RookLegalMoves
 
-def CastlingRules(Row,Col):
+def CastlingRules(SRow,SCol,ERow,ECol): #not fully completed, need to make sure selected piece is king and no pieces in between
     
-    if KingMoved == False and (Row == 7 and Col == 6) and RooksMoved[3] == False:
+    if KingMoved == False and (ERow == 7 and ECol == 6) and (SRow == 7 and SCol == 4) and RooksMoved[3] == False and NumberBoard[SRow][SCol + 1] == NumberBoard[SRow][SCol + 2] == 0: #White KingSide
         LegalMoves[5].append([7,6])
+        KingMoved[0] = True
+        RooksMoved[3] = True
 
-    elif KingMoved == False and (Row == 7 and Col == 2) and RooksMoved[2] == False:
+    elif KingMoved == False and (ERow == 7 and ECol == 2) and (SRow == 7 and SCol == 4) and RooksMoved[2] == False and NumberBoard[SRow][SCol - 1] == NumberBoard[SRow][SCol - 2] == NumberBoard[SRow][SCol - 3] == 0: #White QueenSide
         LegalMoves[5].append([7,2])
+        KingMoved[0] = True
+        RooksMoved[2] = True
 
-    elif KingMoved == False and (Row == 0 and Col == 6) and RooksMoved[1] == False:
+    elif KingMoved == False and (ERow == 0 and ECol == 6) and (SRow == 0 and SCol == 4) and RooksMoved[1] == False and NumberBoard[SRow][SCol + 1] == NumberBoard[SRow][SCol + 2] == 0: #Black KingSide
         LegalMoves[5].append([0,6])
-    
-    elif KingMoved == False and (Row == 0 and Col == 2) and RooksMoved[0] == False:
+        KingMoved[1] = True
+        RooksMoved[1] = True
+
+    elif KingMoved == False and (ERow == 0 and ECol == 2) and (SRow == 0 and SCol == 4) and RooksMoved[0] == False and NumberBoard[SRow][SCol - 1] == NumberBoard[SRow][SCol - 2] == NumberBoard[SRow][SCol - 3] == 0: #Black Queen Side
         LegalMoves[5].append([0,2])
+        KingMoved[1] = True
+        RooksMoved[0] = True
     
+def IsSquareTargeted(ERow, ECol):
+    ReverseVisionSquares = []
+    RPawnV = PawnMovement(NumberBoard,ERow,ECol) 
+    RBishopV = BishopMovement(NumberBoard,ERow,ECol) #RBishopV stands for Reverse Bishop Vision same convention will be used for all pieces
+    RKnightV = KnightMovement(NumberBoard,ERow,ECol)
+    RRookV = RookMovement(NumberBoard,ERow,ECol)
+    RQueenV = QueenMovement(NumberBoard,ERow,ECol)
+    RKingV = KingMovement(NumberBoard,ERow,ECol)
+    PseudoLegalMoves = []
+    for Row in RBishopV:
+        for Col in Row:
+            if NumberBoard[Row][Col] == 2:
+                PseudoLegalMoves.append([Row][Col])
+
+def ReverseIteration(MoveList):
+    
+
+
 
 def CastlingMove(Row,Col):
-    pass
+    print('idk man')
+
 
 print("Enter Move in the format: Starting Square, Ending Square (e.g. A2,A4)")
 Count = 0
@@ -308,8 +338,8 @@ WhiteTurn = False
 BlackTurn = False
 NumberBoard = GetNumberBoard()
 
-KingMoved = False
-RooksMoved = [False,False,
+KingMoved = [False,False] # 0: White King, 1: Black King
+RooksMoved = [False,False, 
               False,False]
 
 while True:
