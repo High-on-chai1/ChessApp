@@ -150,7 +150,7 @@ def KingMovement(BoardPieces, Coordinates, ReverseColour=None):
     # Only filter for check when this is a REAL king generating its own moves.
     # When ReverseColour is set we're inside IsSquareTargeted's reverse-vision
     # trick, and calling IsSquareTargeted again here would recurse forever.
-    if (ERow == 7 and (ECol == 6 or  ECol == 2)) or (ERow == 0 and (ECol == 6 or ECol == 2)) and ReverseColour is None:
+    if ((ERow == 7 and (ECol == 6 or  ECol == 2)) or (ERow == 0 and (ECol == 6 or ECol == 2))) and ReverseColour is None:
         CastlingRules(SRow, SCol, ERow, ECol)
 
     if ReverseColour is None:
