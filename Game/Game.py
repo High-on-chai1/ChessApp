@@ -96,7 +96,7 @@ def BishopMovement(BoardPieces, Row, Col):
 
 
 
-def KingMovement(BoardPieces, SRow, SCol, ERow, ECol):
+def KingMovement(BoardPieces, SRow, SCol, ERow=None, ECol=None):
     directions = [
     (-1, -1), (-1, 0), (-1, 1),
     (0, -1),           (0, 1),
@@ -325,21 +325,41 @@ def IsSquareTargeted(ERow, ECol, KingColor): #WIP
     RKingV = KingMovement(NumberBoard,ERow,ECol)
 
     if KingColor < 0:
-        PseudoLegalMoves.append([ReverseIteration(RBishopV, 2)])
-        PseudoLegalMoves.append([ReverseIteration(RKnightV, 3)])
-        PseudoLegalMoves.append([ReverseIteration(RRookV, 4)])
-        PseudoLegalMoves.append([ReverseIteration(RQueenV, 5)])
-        PseudoLegalMoves.append([ReverseIteration(RKingV, 6)])
+        if (ReverseIteration(RBishopV, 2)):
+            PseudoLegalMoves.append([ERow,ECol])
+
+        if (ReverseIteration(RKnightV, 3)):
+            PseudoLegalMoves.append([ERow,ECol])
+            
+        if (ReverseIteration(RRookV, 4)):
+            PseudoLegalMoves.append([ERow,ECol])
+
+        if (ReverseIteration(RQueenV, 5)):
+            PseudoLegalMoves.append([ERow,ECol])
+
+        if(ReverseIteration(RKingV, 6)):
+            PseudoLegalMoves.append([ERow,ECol])
+
         if NumberBoard[ERow + 1][ECol - 1] == 1 or NumberBoard[ERow + 1][ECol + 1] == 1:
             PseudoLegalMoves.append([ERow,ECol])
 
 
     elif KingColor > 0:
-        PseudoLegalMoves.append([ReverseIteration(RBishopV, -2)])
-        PseudoLegalMoves.append([ReverseIteration(RKnightV, -3)])
-        PseudoLegalMoves.append([ReverseIteration(RRookV, -4)])
-        PseudoLegalMoves.append([ReverseIteration(RQueenV, -5)])
-        PseudoLegalMoves.append([ReverseIteration(RKingV, -6)])
+        if (ReverseIteration(RBishopV, -2)):
+            PseudoLegalMoves.append([ERow,ECol])
+
+        if (ReverseIteration(RKnightV, -3)):
+            PseudoLegalMoves.append([ERow,ECol])
+
+        if (ReverseIteration(RRookV, -4)):
+            PseudoLegalMoves.append([ERow,ECol])
+
+        if (ReverseIteration(RQueenV, -5)):
+            PseudoLegalMoves.append([ERow,ECol])
+
+        if (ReverseIteration(RKingV, -6)):
+            PseudoLegalMoves.append([ERow,ECol])
+
         if NumberBoard[ERow - 1][ECol - 1] == -1 or NumberBoard[ERow - 1][ECol + 1] == -1:
             PseudoLegalMoves.append([ERow,ECol])
 
@@ -348,12 +368,11 @@ def IsSquareTargeted(ERow, ECol, KingColor): #WIP
     
 
 def ReverseIteration(MoveList, PieceType): #WIP
-    PLM = []
+
     for Row, Col in MoveList:
         if NumberBoard[Row][Col] == PieceType:
-            PLM.append([Row, Col])
-    return PLM
- 
+            return True
+    return False
 
 
 
