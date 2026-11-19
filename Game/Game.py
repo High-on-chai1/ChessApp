@@ -337,7 +337,7 @@ def RookMovement(BoardPieces, Coordinates, ReverseColour=None):
 
 
 def IsSquareTargeted(EndIndexList, KingColor, CurrentBoard):  # WIP
-    PseudoLegalMoves = []
+    PseudoLegalMoves =[]
 
     # RBishopV stands for Reverse Bishop Vision, same convention used for all pieces.
     # Pass KingColor through as ReverseColour so each piece simulates itself as the
@@ -484,7 +484,7 @@ while True:
             if Piece == 6:
                 KingMoved[0] = True
         
-    if EndIndex in LegalMoves[(Piece * -1) - 1] and BlackTurn == True and Piece < 0:
+    if EndIndex in LegalMoves[abs(Piece) - 1] and BlackTurn == True and Piece < 0:
             NumberBoard[StartIndex[0]][StartIndex[1]] = 0
             NumberBoard[EndIndex[0]][EndIndex[1]] = Piece
 
